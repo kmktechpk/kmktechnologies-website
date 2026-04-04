@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="KMK Technologies — Making Lives Better. We build public-facing apps that solve real problems for real people.">
+<title>KMK Technologies — Making Lives Better</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#5B7AFF;--primary-hover:#4A6AEF;--accent:#FF4D00;
+  --bg-dark:#050912;--bg-surface:#0A0F1E;--bg-card:#0D1428;--bg-light:#EEF1FF;
+  --text-light:#F0F4FF;--text-muted:#6B82A8;--text-faint:#3A4A6A;
+  --border:rgba(91,122,255,0.12);--border-light:#DDE3F5;
+  --n-grad:linear-gradient(135deg,#FF8C42,#FF3D00);
+  --w-grad:linear-gradient(135deg,#4DC8F0,#1A7FBF);
+  --font:'DM Sans',sans-serif;--r:16px;--rs:8px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--bg-dark);color:var(--text-light);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 15% 10%,rgba(91,122,255,.10) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 85% 80%,rgba(255,77,0,.05) 0%,transparent 60%);pointer-events:none;z-index:0;}
+*{position:relative;z-index:1;}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:.5;transform:scale(1);}50%{opacity:1;transform:scale(1.2);}}
+@keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+@keyframes glowPulse{0%,100%{opacity:.35;}50%{opacity:.85;}}
+@keyframes scrollWheel{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(10px);opacity:0;}}
+
+.fu {animation:fadeUp .8s cubic-bezier(.22,1,.36,1) both;}
+.fu1{animation:fadeUp .8s .12s cubic-bezier(.22,1,.36,1) both;}
+.fu2{animation:fadeUp .8s .22s cubic-bezier(.22,1,.36,1) both;}
+.fu3{animation:fadeUp .8s .32s cubic-bezier(.22,1,.36,1) both;}
+.fu4{animation:fadeUp .8s .42s cubic-bezier(.22,1,.36,1) both;}
+
+.rev     {opacity:0;transform:translateY(28px) scale(.99);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);}
+.rev-l   {opacity:0;transform:translateX(-28px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);}
+.rev-r   {opacity:0;transform:translateX(28px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);}
+.stagger >*{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1);}
+.in{opacity:1!important;transform:none!important;}
+.stagger.in>*:nth-child(1){opacity:1;transform:none;transition-delay:.00s;}
+.stagger.in>*:nth-child(2){opacity:1;transform:none;transition-delay:.10s;}
+.stagger.in>*:nth-child(3){opacity:1;transform:none;transition-delay:.20s;}
+.stagger.in>*:nth-child(4){opacity:1;transform:none;transition-delay:.30s;}
+.stagger.in>*:nth-child(5){opacity:1;transform:none;transition-delay:.40s;}
+.stagger.in>*:nth-child(6){opacity:1;transform:none;transition-delay:.50s;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;height:64px;padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(5,9,18,.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:.5px solid var(--border);transition:background .3s,border-color .3s;}
+nav.scrolled{background:rgba(5,9,18,.96);border-color:rgba(91,122,255,.2);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-text{font-size:15px;font-weight:500;color:var(--text-light);letter-spacing:-.01em;}
+.nav-logo-text span{color:var(--primary);}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none;}
+.nav-links a{font-size:13px;font-weight:400;color:var(--text-muted);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--text-light);}
+.nav-cta{font-size:13px!important;font-weight:600!important;color:#fff!important;background:var(--primary);padding:8px 18px;border-radius:7px;transition:background .2s,transform .15s,box-shadow .2s!important;}
+.nav-cta:hover{background:var(--primary-hover)!important;transform:translateY(-1px);box-shadow:0 6px 20px rgba(91,122,255,.3);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 2rem 80px;position:relative;overflow:hidden;}
+#cvs{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.hero-glow{position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:1100px;height:550px;background:radial-gradient(ellipse,rgba(91,122,255,.15) 0%,transparent 65%);pointer-events:none;animation:glowPulse 5s ease-in-out infinite;z-index:1;}
+.hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;}
+.hero-bottom{position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(91,122,255,.3),transparent);z-index:2;}
+
+.logo-wrap{margin-bottom:2.25rem;animation:floatY 5s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(91,122,255,.4));}
+
+.eyebrow-pill{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--primary);background:rgba(91,122,255,.07);border:.5px solid rgba(91,122,255,.2);padding:6px 16px;border-radius:20px;margin-bottom:2rem;}
+.e-dot{width:5px;height:5px;border-radius:50%;background:var(--primary);animation:pulse 2s ease-in-out infinite;}
+
+.hero h1{font-size:clamp(40px,6.5vw,78px);font-weight:400;line-height:1.08;letter-spacing:-.025em;color:var(--text-light);max-width:840px;margin-bottom:1.5rem;}
+.hero h1 .blue{background:linear-gradient(135deg,#7B9FFF,#5B7AFF,#4DC8F0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+.hero-sub{font-size:clamp(15px,1.8vw,17px);font-weight:400;color:var(--text-muted);line-height:1.8;max-width:480px;margin:0 auto 2.5rem;text-align:center;}
+
+.hero-btns{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;}
+
+.scroll-ind{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2;animation:fadeUp .8s 1s ease both;}
+.scroll-mouse{width:22px;height:34px;border:1.5px solid rgba(91,122,255,.35);border-radius:11px;display:flex;align-items:flex-start;justify-content:center;padding-top:5px;}
+.scroll-wheel{width:3px;height:6px;background:var(--primary);border-radius:2px;animation:scrollWheel 1.8s ease-in-out infinite;}
+.scroll-txt{font-size:9px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font);font-size:14px;font-weight:600;color:#fff;background:var(--primary);padding:12px 24px;border-radius:var(--rs);text-decoration:none;border:none;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s;letter-spacing:-.01em;}
+.btn:hover{background:var(--primary-hover);transform:translateY(-2px);box-shadow:0 10px 32px rgba(91,122,255,.32);}
+.btn:active{transform:translateY(0);}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;font-family:var(--font);font-size:14px;font-weight:500;color:var(--text-muted);background:transparent;padding:12px 24px;border-radius:var(--rs);text-decoration:none;border:.5px solid rgba(91,122,255,.2);cursor:pointer;transition:color .2s,border-color .2s,transform .15s,background .2s;}
+.btn-ghost:hover{color:var(--text-light);border-color:rgba(91,122,255,.4);transform:translateY(-2px);background:rgba(91,122,255,.05);}
+
+/* SECTIONS */
+section{padding:7rem 2rem;}
+.inner{max-width:1060px;margin:0 auto;}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;}
+.sec-title{font-size:clamp(28px,4vw,46px);font-weight:400;color:var(--text-light);letter-spacing:-.022em;line-height:1.12;margin-bottom:1rem;}
+.sec-title .blue{color:var(--primary);}
+.sec-body{font-size:15px;font-weight:400;color:var(--text-muted);line-height:1.82;}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-top:3.5rem;}
+.about-text{display:flex;flex-direction:column;gap:1.1rem;}
+.about-text .sec-body{max-width:100%;}
+
+.founders{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem;}
+.fc{background:var(--bg-card);border:.5px solid var(--border);border-radius:var(--r);padding:1.5rem;position:relative;overflow:hidden;cursor:default;transition:border-color .25s,box-shadow .25s;}
+.fc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--primary),transparent);opacity:.5;}
+.fc::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(91,122,255,.08) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none;}
+.fc:hover::after{opacity:1;}
+.fc:hover{border-color:rgba(91,122,255,.28);box-shadow:0 8px 32px rgba(0,0,0,.3);}
+.fi{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(91,122,255,.2),rgba(91,122,255,.05));border:.5px solid rgba(91,122,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:var(--primary);margin-bottom:12px;}
+.fn{font-size:14px;font-weight:600;color:var(--text-light);margin-bottom:3px;letter-spacing:-.01em;}
+.fr{font-size:9px;font-weight:600;color:var(--primary);letter-spacing:.08em;margin-bottom:10px;text-transform:uppercase;}
+.fe{font-size:12px;color:var(--text-muted);line-height:1.65;margin-bottom:10px;}
+.ftags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.ftag{font-size:10px;font-weight:500;color:var(--text-faint);background:rgba(255,255,255,.03);border:.5px solid var(--border);padding:3px 9px;border-radius:20px;}
+
+.about-card{background:var(--bg-card);border:.5px solid var(--border);border-radius:var(--r);padding:2rem;position:sticky;top:84px;transition:border-color .25s,box-shadow .25s;}
+.about-card:hover{border-color:rgba(91,122,255,.22);box-shadow:0 12px 40px rgba(0,0,0,.25);}
+.ac-top{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:.5px solid var(--border);}
+.ac-name{font-size:15px;font-weight:500;color:var(--text-light);letter-spacing:-.01em;}
+.ac-url{font-size:11px;color:var(--text-faint);margin-top:2px;}
+.ac-body{font-size:13px;color:var(--text-muted);line-height:1.75;margin-bottom:1.25rem;}
+.ac-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.25rem;}
+.ac-tag{font-size:11px;font-weight:500;color:var(--primary);background:rgba(91,122,255,.07);border:.5px solid rgba(91,122,255,.16);padding:4px 11px;border-radius:20px;}
+.ac-status{display:flex;align-items:center;gap:8px;padding-top:1.25rem;border-top:.5px solid var(--border);}
+.green-dot{width:7px;height:7px;border-radius:50%;background:#00D166;animation:pulse 2.5s ease-in-out infinite;flex-shrink:0;}
+.ac-status-txt{font-size:12px;color:var(--text-muted);}
+
+/* PRODUCTS */
+.products{background:linear-gradient(180deg,transparent 0%,rgba(91,122,255,.03) 50%,transparent 100%);}
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3.5rem;}
+.pc{background:var(--bg-card);border:.5px solid var(--border);border-radius:var(--r);padding:2.5rem;position:relative;overflow:hidden;cursor:default;}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;}
+.pc::after{content:'';position:absolute;bottom:-80px;right:-80px;width:200px;height:200px;border-radius:50%;opacity:.05;transition:opacity .4s,transform .4s;}
+.pc:hover::after{opacity:.12;transform:scale(1.1);}
+.pc.ni::before{background:var(--n-grad);}.pc.ni::after{background:#FF6B1A;}
+.pc.wf::before{background:var(--w-grad);}.pc.wf::after{background:#2BA8E0;}
+.pc .prod-icon{width:52px;height:52px;border-radius:14px;flex-shrink:0;transition:transform .3s cubic-bezier(.22,1,.36,1);filter:drop-shadow(0 4px 12px rgba(0,0,0,.3));}
+.pc:hover .prod-icon{transform:scale(1.08) translateY(-2px);}
+.prod-hdr{display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;}
+.prod-name{font-size:22px;font-weight:400;color:var(--text-light);letter-spacing:-.01em;line-height:1;}
+.prod-tag{font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;margin-top:5px;}
+.ni .prod-tag{color:#FF8C42;}.wf .prod-tag{color:#4DC8F0;}
+.prod-desc{font-size:14px;color:var(--text-muted);line-height:1.78;margin-bottom:1.5rem;}
+.prod-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:1.75rem;}
+.prod-feats li{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--text-muted);}
+.prod-feats li::before{content:'';width:4px;height:4px;border-radius:50%;flex-shrink:0;}
+.ni .prod-feats li::before{background:#FF8C42;}.wf .prod-feats li::before{background:#4DC8F0;}
+.prod-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:20px;}
+.badge-n{background:rgba(255,140,66,.1);color:#FF8C42;border:.5px solid rgba(255,140,66,.2);}
+.badge-w{background:rgba(77,200,240,.1);color:#4DC8F0;border:.5px solid rgba(77,200,240,.2);}
+.bdot{width:5px;height:5px;border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+.badge-n .bdot{background:#FF8C42;}.badge-w .bdot{background:#4DC8F0;}
+
+.family{margin-top:2rem;background:var(--bg-card);border:.5px solid var(--border);border-radius:var(--r);padding:2.5rem;display:flex;align-items:center;justify-content:center;gap:4rem;flex-wrap:wrap;transition:border-color .25s;}
+.family:hover{border-color:rgba(91,122,255,.22);}
+.fam-item{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.fam-item svg{transition:transform .3s cubic-bezier(.22,1,.36,1);filter:drop-shadow(0 4px 16px rgba(0,0,0,.2));}
+.fam-item:hover svg{transform:translateY(-4px) scale(1.05);}
+.fam-name{font-size:13px;font-weight:500;color:var(--text-light);text-align:center;}
+.fam-role{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-align:center;margin-top:2px;}
+.fam-div{width:48px;height:.5px;background:var(--border);}
+
+/* WORK WITH US */
+.work-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3.5rem;margin-bottom:3.5rem;}
+.wc{background:var(--bg-card);border:.5px solid var(--border);border-radius:var(--r);padding:2.5rem;position:relative;overflow:hidden;transition:border-color .25s,box-shadow .25s;}
+.wc::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,var(--primary),transparent);}
+.wc:hover{border-color:rgba(91,122,255,.28);box-shadow:0 16px 48px rgba(0,0,0,.25);}
+.wc-icon{width:48px;height:48px;border-radius:12px;background:rgba(91,122,255,.08);border:.5px solid rgba(91,122,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;transition:background .2s,transform .2s;}
+.wc:hover .wc-icon{background:rgba(91,122,255,.14);transform:scale(1.05);}
+.wc-title{font-size:20px;font-weight:400;color:var(--text-light);letter-spacing:-.01em;margin-bottom:.75rem;}
+.wc-desc{font-size:14px;color:var(--text-muted);line-height:1.75;margin-bottom:1.5rem;}
+.wc-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.wc-list li{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--text-muted);line-height:1.5;}
+.wc-list li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--primary);flex-shrink:0;margin-top:6px;}
+
+.contact-row{display:grid;grid-template-columns:1fr 1.2fr;gap:3.5rem;align-items:start;}
+.cd{display:flex;align-items:center;gap:12px;padding:1rem 0;border-bottom:.5px solid var(--border);}
+.cd:last-child{border-bottom:none;}
+.cd-icon{width:36px;height:36px;border-radius:8px;background:rgba(91,122,255,.08);border:.5px solid rgba(91,122,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,transform .2s;}
+.cd:hover .cd-icon{background:rgba(91,122,255,.14);transform:scale(1.05);}
+.cd-label{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:2px;}
+.cd-val{font-size:14px;color:var(--text-muted);}
+
+.cform{background:var(--bg-card);border:.5px solid var(--border);border-radius:var(--r);padding:2rem;transition:border-color .25s,box-shadow .25s;}
+.cform:hover{border-color:rgba(91,122,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.2);}
+.fg{margin-bottom:1.25rem;}
+.fl{display:block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+.fi-inp,.fi-ta,.fi-sel{width:100%;font-family:var(--font);font-size:14px;font-weight:400;color:var(--text-light);background:rgba(255,255,255,.03);border:.5px solid var(--border);border-radius:var(--rs);padding:11px 14px;outline:none;transition:border-color .2s,background .2s,box-shadow .2s;appearance:none;}
+.fi-inp::placeholder,.fi-ta::placeholder{color:var(--text-faint);}
+.fi-inp:focus,.fi-ta:focus,.fi-sel:focus{border-color:rgba(91,122,255,.45);background:rgba(91,122,255,.04);box-shadow:0 0 0 3px rgba(91,122,255,.08);}
+.fi-ta{resize:vertical;min-height:110px;}
+.fi-sel option{background:var(--bg-surface);color:var(--text-light);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.fsub{width:100%;font-family:var(--font);font-size:14px;font-weight:600;color:#fff;background:var(--primary);border:none;border-radius:var(--rs);padding:13px;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s;letter-spacing:-.01em;margin-top:.5rem;}
+.fsub:hover{background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 8px 24px rgba(91,122,255,.28);}
+.fsub:active{transform:translateY(0);}
+
+/* FOOTER */
+footer{background:var(--bg-surface);border-top:.5px solid var(--border);padding:3rem 2rem;}
+.foot-inner{max-width:1060px;margin:0 auto;}
+.foot-top{display:flex;align-items:flex-start;justify-content:space-between;gap:3rem;flex-wrap:wrap;padding-bottom:2.5rem;border-bottom:.5px solid var(--border);}
+.foot-name{font-size:18px;font-weight:500;color:var(--text-light);letter-spacing:-.01em;margin-bottom:4px;}
+.foot-name span{color:var(--primary);}
+.foot-tag{font-size:12px;color:var(--text-muted);margin-top:6px;margin-bottom:1.25rem;}
+.socials{display:flex;gap:10px;}
+.soc{width:34px;height:34px;border-radius:8px;background:rgba(91,122,255,.06);border:.5px solid var(--border);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--text-muted);font-size:12px;font-weight:600;transition:background .2s,color .2s,border-color .2s,transform .2s;}
+.soc:hover{background:rgba(91,122,255,.14);color:var(--primary);border-color:rgba(91,122,255,.28);transform:translateY(-2px);}
+.fl-title{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-faint);margin-bottom:1rem;}
+.fl-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.fl-list a{font-size:13px;color:var(--text-muted);text-decoration:none;transition:color .2s,transform .2s;display:inline-block;}
+.fl-list a:hover{color:var(--text-light);transform:translateX(3px);}
+.foot-bot{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;flex-wrap:wrap;gap:1rem;}
+.foot-copy{font-size:12px;color:var(--text-faint);}
+.foot-copy span{color:var(--text-muted);}
+.foot-domain{font-size:12px;color:var(--text-faint);font-weight:500;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:0 1rem;}.nav-links{display:none;}
+  .hero{padding:100px 1.25rem 60px;}
+  .about-grid,.prod-grid,.work-grid,.contact-row{grid-template-columns:1fr;}
+  .about-grid{gap:2.5rem;}.founders{grid-template-columns:1fr;}
+  section{padding:4.5rem 1.25rem;}
+  .family{gap:2rem;}.fam-div{display:none;}
+  .foot-top{flex-direction:column;}.frow{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 56 56" fill="none">
+      <rect width="56" height="56" rx="12" fill="#111827"/>
+      <path d="M28 46L28 20" stroke="#F0F4FF" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M21 19Q24.5 13 28 15" stroke="#5B7AFF" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".4"/>
+      <path d="M18 15Q23 7 28 10" stroke="#5B7AFF" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".65"/>
+      <path d="M15 11Q21.5 1 28 5" stroke="#5B7AFF" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      <circle cx="28" cy="15" r="3.2" fill="#5B7AFF"/>
+      <circle cx="28" cy="15" r="5.5" fill="#5B7AFF" opacity=".15"/>
+      <circle cx="28" cy="46" r="2.5" fill="#FF4D00" opacity=".8"/>
+    </svg>
+    <span class="nav-logo-text">KMK <span>Technologies</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#work">Work With Us</a></li>
+    <li><a href="#work" class="nav-cta">Get in Touch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="cvs"></canvas>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="logo-wrap fu">
+      <svg width="76" height="76" viewBox="0 0 56 56" fill="none">
+        <defs>
+          <radialGradient id="hg" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="rgba(91,122,255,.3)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <rect width="56" height="56" rx="14" fill="#111827"/>
+        <rect width="56" height="56" rx="14" fill="url(#hg)"/>
+        <path d="M28 46L28 20" stroke="#F0F4FF" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M21 19Q24.5 13 28 15" stroke="#5B7AFF" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".4"/>
+        <path d="M18 15Q23 7 28 10" stroke="#5B7AFF" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".65"/>
+        <path d="M15 11Q21.5 1 28 5" stroke="#5B7AFF" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+        <circle cx="28" cy="15" r="3.2" fill="#5B7AFF"/>
+        <circle cx="28" cy="15" r="5.5" fill="#5B7AFF" opacity=".25"/>
+        <circle cx="28" cy="46" r="2.5" fill="#FF4D00" opacity=".85"/>
+      </svg>
+    </div>
+    <div class="eyebrow-pill fu1">
+      <span class="e-dot"></span>
+      Making Lives Better
+    </div>
+    <h1 class="fu2">Technology that <span class="blue">moves Pakistan</span> forward.</h1>
+    <p class="hero-sub fu3">KMK Technologies builds public-facing apps that solve real problems for real people.</p>
+    <div class="hero-btns fu4">
+      <a href="#products" class="btn">
+        Explore Our Products
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#work" class="btn-ghost">Work With Us</a>
+    </div>
+  </div>
+  <div class="scroll-ind">
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    <span class="scroll-txt">Scroll</span>
+  </div>
+  <div class="hero-bottom"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="inner">
+    <div class="eyebrow rev">Our Story</div>
+    <h2 class="sec-title rev">We build technology that <span class="blue">serves people</span>.</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="sec-body rev-l">KMK Technologies was founded on a straightforward belief — that technology should work for everyone, not just the few. We exist to bridge the gap between the tools people need and the technology that currently exists to serve them.</p>
+        <p class="sec-body rev-l">We look at the daily friction people face — finding a pharmacy at midnight, spending hours tailoring a resume for a job that never replies — and we ask: why hasn't this been properly solved? Then we build the solution.</p>
+        <p class="sec-body rev-l">Our team brings together deep expertise in technology, product development, finance, and operations. We are practitioners who have spent years inside complex systems — and we know exactly where the gaps are.</p>
+        <div class="founders stagger">
+          <div class="fc tilt">
+            <div class="fi">MK</div>
+            <div class="fn">Muhammad I. Khalid</div>
+            <div class="fr">Co-Founder</div>
+            <div class="fe">8+ years in tech consultancy spanning process automation, AI implementation, and digital transformation across multiple industries.</div>
+            <div class="ftags">
+              <span class="ftag">BS Accounting &amp; Finance</span>
+              <span class="ftag">MBA Risk Management</span>
+              <span class="ftag">MSc Informatics</span>
+            </div>
+          </div>
+          <div class="fc tilt">
+            <div class="fi">HB</div>
+            <div class="fn">Hamza S. Butt</div>
+            <div class="fr">Co-Founder</div>
+            <div class="fe">11+ years across DevOps, product management, and full-cycle app development — from architecture to deployment to scale.</div>
+            <div class="ftags">
+              <span class="ftag">BSc Electrical Engineering</span>
+              <span class="ftag">DevOps</span>
+              <span class="ftag">Product Management</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rev-r">
+        <div class="about-card tilt">
+          <div class="ac-top">
+            <svg width="36" height="36" viewBox="0 0 56 56" fill="none">
+              <rect width="56" height="56" rx="12" fill="#111827"/>
+              <path d="M28 46L28 20" stroke="#F0F4FF" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M18 15Q23 7 28 10" stroke="#5B7AFF" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".65"/>
+              <path d="M15 11Q21.5 1 28 5" stroke="#5B7AFF" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+              <circle cx="28" cy="15" r="3.2" fill="#5B7AFF"/>
+              <circle cx="28" cy="46" r="2.5" fill="#FF4D00" opacity=".8"/>
+            </svg>
+            <div>
+              <div class="ac-name">KMK Technologies</div>
+              <div class="ac-url">kmktechnologies.dev · Pakistan</div>
+            </div>
+          </div>
+          <div class="ac-body">Founded to serve the general public through technology that is genuinely useful, rigorously verified, and built to scale. Every product we make starts with a real problem we have witnessed firsthand.</div>
+          <div class="ac-tags">
+            <span class="ac-tag">Mobile Apps</span>
+            <span class="ac-tag">AI-Powered</span>
+            <span class="ac-tag">Location Tech</span>
+            <span class="ac-tag">Career Tools</span>
+            <span class="ac-tag">Pakistan-First</span>
+            <span class="ac-tag">Global Vision</span>
+            <span class="ac-tag">Process Automation</span>
+            <span class="ac-tag">Digital Transformation</span>
+          </div>
+          <div class="ac-status">
+            <div class="green-dot"></div>
+            <div class="ac-status-txt">Actively building — open to investment &amp; partnerships</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="inner">
+    <div class="eyebrow rev">Our Products</div>
+    <h2 class="sec-title rev">Two products. <span class="blue">One mission.</span></h2>
+    <p class="sec-body rev" style="max-width:560px">One built for the streets of Pakistan. One built for job seekers everywhere. Both built to solve problems that existing tools have failed to solve properly.</p>
+    <div class="prod-grid stagger">
+      <div class="pc ni tilt">
+        <div class="prod-hdr">
+          <svg class="prod-icon" viewBox="0 0 56 56" fill="none">
+            <defs>
+              <linearGradient id="ni" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF8C42"/><stop offset="100%" stop-color="#FF3D00"/></linearGradient>
+              <radialGradient id="nig" cx="50%" cy="38%" r="50%"><stop offset="0%" stop-color="#FFB380" stop-opacity=".5"/><stop offset="100%" stop-color="#FF3D00" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="56" height="56" rx="14" fill="url(#ni)"/><rect width="56" height="56" rx="14" fill="url(#nig)"/>
+            <path d="M28 7C20 7 14 13 14 21C14 32 28 49 28 49C28 49 42 32 42 21C42 13 36 7 28 7Z" fill="rgba(255,255,255,.15)" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="28" cy="21" r="6" fill="#fff"/><circle cx="28" cy="21" r="9.5" fill="none" stroke="#fff" stroke-width="1" opacity=".35"/>
+          </svg>
+          <div><div class="prod-name">Nishaan</div><div class="prod-tag">Pakistan · Location Services</div></div>
+        </div>
+        <p class="prod-desc">A location-based discovery app that connects people across Pakistan to essential services — pharmacies, hospitals, clinics, and more — exactly when they need them. No typing. No searching. Open the app and let Nishaan guide you.</p>
+        <ul class="prod-feats">
+          <li>Passive notifications as you drive past open services</li>
+          <li>Emergency mode — one tap to the nearest open pharmacy</li>
+          <li>Verified, community-maintained service data</li>
+          <li>Built for daily discovery and urgent situations alike</li>
+        </ul>
+        <div class="prod-badge badge-n"><span class="bdot"></span>In Development — Pakistan</div>
+      </div>
+      <div class="pc wf tilt">
+        <div class="prod-hdr">
+          <svg class="prod-icon" viewBox="0 0 56 56" fill="none">
+            <defs>
+              <linearGradient id="wi" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4DC8F0"/><stop offset="100%" stop-color="#1A7FBF"/></linearGradient>
+              <radialGradient id="wig" cx="75%" cy="20%" r="55%"><stop offset="0%" stop-color="#80E0FF" stop-opacity=".45"/><stop offset="100%" stop-color="#1A7FBF" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="56" height="56" rx="14" fill="url(#wi)"/><rect width="56" height="56" rx="14" fill="url(#wig)"/>
+            <path d="M10 14L18 36L28 22L38 36L46 14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M42 10L46 14L50 10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="10" cy="14" r="2.5" fill="#fff" opacity=".45"/><circle cx="18" cy="36" r="2.5" fill="#fff" opacity=".6"/>
+            <circle cx="28" cy="22" r="3.5" fill="#fff"/><circle cx="38" cy="36" r="2.5" fill="#fff" opacity=".6"/><circle cx="46" cy="14" r="3.5" fill="#fff"/>
+          </svg>
+          <div><div class="prod-name">Workfluence</div><div class="prod-tag">Global · Career Platform</div></div>
+        </div>
+        <p class="prod-desc">An AI-powered career platform that starts with your entire life story and works backwards to every job you apply to. Tell us everything once — we write every resume, tailored to every role, every time. Your career guide. Not a resume builder.</p>
+        <ul class="prod-feats">
+          <li>One-time life profile — never write a resume again</li>
+          <li>AI compatibility score before you apply anywhere</li>
+          <li>Role-specific resumes, cover letters, and interview prep</li>
+          <li>Built for emerging market job seekers worldwide</li>
+        </ul>
+        <div class="prod-badge badge-w"><span class="bdot"></span>In Development — Global</div>
+      </div>
+    </div>
+    <div class="family rev">
+      <div class="fam-item">
+        <svg width="52" height="52" viewBox="0 0 56 56" fill="none"><rect width="56" height="56" rx="14" fill="#111827"/><path d="M28 46L28 20" stroke="#F0F4FF" stroke-width="2.5" stroke-linecap="round"/><path d="M21 19Q24.5 13 28 15" stroke="#5B7AFF" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".4"/><path d="M18 15Q23 7 28 10" stroke="#5B7AFF" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".65"/><path d="M15 11Q21.5 1 28 5" stroke="#5B7AFF" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="28" cy="15" r="3.2" fill="#5B7AFF"/><circle cx="28" cy="15" r="5.5" fill="#5B7AFF" opacity=".15"/><circle cx="28" cy="46" r="2.5" fill="#FF4D00" opacity=".8"/></svg>
+        <div><div class="fam-name">KMK Technologies</div><div class="fam-role" style="color:var(--text-faint)">Parent Company</div></div>
+      </div>
+      <div class="fam-div"></div>
+      <div class="fam-item">
+        <svg width="52" height="52" viewBox="0 0 56 56" fill="none"><defs><linearGradient id="fn3" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF8C42"/><stop offset="100%" stop-color="#FF3D00"/></linearGradient><radialGradient id="fng3" cx="50%" cy="38%" r="50%"><stop offset="0%" stop-color="#FFB380" stop-opacity=".5"/><stop offset="100%" stop-color="#FF3D00" stop-opacity="0"/></radialGradient></defs><rect width="56" height="56" rx="14" fill="url(#fn3)"/><rect width="56" height="56" rx="14" fill="url(#fng3)"/><path d="M28 7C20 7 14 13 14 21C14 32 28 49 28 49C28 49 42 32 42 21C42 13 36 7 28 7Z" fill="rgba(255,255,255,.15)" stroke="#fff" stroke-width="1.5"/><circle cx="28" cy="21" r="6" fill="#fff"/><circle cx="28" cy="21" r="9.5" fill="none" stroke="#fff" stroke-width="1" opacity=".35"/></svg>
+        <div><div class="fam-name">Nishaan</div><div class="fam-role" style="background:linear-gradient(90deg,#FF8C42,#FF3D00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Pakistan</div></div>
+      </div>
+      <div class="fam-div"></div>
+      <div class="fam-item">
+        <svg width="52" height="52" viewBox="0 0 56 56" fill="none"><defs><linearGradient id="fw3" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4DC8F0"/><stop offset="100%" stop-color="#1A7FBF"/></linearGradient><radialGradient id="fwg3" cx="75%" cy="20%" r="55%"><stop offset="0%" stop-color="#80E0FF" stop-opacity=".45"/><stop offset="100%" stop-color="#1A7FBF" stop-opacity="0"/></radialGradient></defs><rect width="56" height="56" rx="14" fill="url(#fw3)"/><rect width="56" height="56" rx="14" fill="url(#fwg3)"/><path d="M10 14L18 36L28 22L38 36L46 14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M42 10L46 14L50 10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="28" cy="22" r="3.5" fill="#fff"/><circle cx="46" cy="14" r="3.5" fill="#fff"/><circle cx="18" cy="36" r="2.5" fill="#fff" opacity=".6"/><circle cx="38" cy="36" r="2.5" fill="#fff" opacity=".6"/></svg>
+        <div><div class="fam-name">Workfluence</div><div class="fam-role" style="background:linear-gradient(90deg,#4DC8F0,#1A7FBF);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Global</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK WITH US -->
+<section id="work">
+  <div class="inner">
+    <div class="eyebrow rev">Work With Us</div>
+    <h2 class="sec-title rev">For investors <span class="blue">&amp; clients</span>.</h2>
+    <p class="sec-body rev" style="max-width:540px">Whether you are looking to invest in the future of Pakistani technology, or you need a world-class team to build your next digital product — we want to hear from you.</p>
+    <div class="work-grid stagger">
+      <div class="wc tilt">
+        <div class="wc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 17L8 12l3 3 4-5 4 4" stroke="#5B7AFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 5h16" stroke="#5B7AFF" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="wc-title">Investors</div>
+        <div class="wc-desc">We are building two products with strong market potential — one addressing a critical gap in Pakistan's essential services infrastructure, one targeting the global career tools market. We are open to conversations with aligned investors who believe in what we are building.</div>
+        <ul class="wc-list">
+          <li>Two differentiated products at early stage</li>
+          <li>Founders with 8–11 years of domain expertise</li>
+          <li>Pakistan-first with a clear global expansion path</li>
+          <li>Monetisation strategy built into the product from day one</li>
+        </ul>
+      </div>
+      <div class="wc tilt">
+        <div class="wc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke="#5B7AFF" stroke-width="1.5"/><path d="M8 9h6M8 13h4" stroke="#5B7AFF" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="wc-title">Clients</div>
+        <div class="wc-desc">Need a mobile app, a web platform, or a custom digital solution built? Our team brings deep experience in product development, AI integration, DevOps, and digital transformation. We build products that work — on time, on spec, and built to last.</div>
+        <ul class="wc-list">
+          <li>Mobile apps — iOS and Android (Flutter)</li>
+          <li>AI integration and process automation</li>
+          <li>Web platforms and backend systems</li>
+          <li>End-to-end product development and DevOps</li>
+        </ul>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="rev-l">
+        <p class="sec-body" style="margin-bottom:2rem">Ready to start a conversation? Fill in the form and we will get back to you within 24 hours.</p>
+        <div class="cd"><div class="cd-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4l6 5 6-5M2 4h12v9H2V4z" stroke="#5B7AFF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="cd-label">Email</div><div class="cd-val">hello@kmktechnologies.dev</div></div></div>
+        <div class="cd"><div class="cd-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#5B7AFF" stroke-width="1.2"/><path d="M8 6v4M6 8h4" stroke="#5B7AFF" stroke-width="1.2" stroke-linecap="round"/></svg></div><div><div class="cd-label">Response Time</div><div class="cd-val">Within 24 hours</div></div></div>
+        <div class="cd"><div class="cd-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2C5.2 2 3 4.2 3 7c0 3.8 5 9 5 9s5-5.2 5-9c0-2.8-2.2-5-5-5z" stroke="#5B7AFF" stroke-width="1.2"/><circle cx="8" cy="7" r="1.5" stroke="#5B7AFF" stroke-width="1.2"/></svg></div><div><div class="cd-label">Location</div><div class="cd-val">Pakistan</div></div></div>
+      </div>
+      <div class="rev-r">
+        <div class="cform">
+          <form onsubmit="submitForm(event)">
+            <div class="frow">
+              <div class="fg"><label class="fl">First name</label><input class="fi-inp" type="text" placeholder="Ahmed" required></div>
+              <div class="fg"><label class="fl">Last name</label><input class="fi-inp" type="text" placeholder="Khan" required></div>
+            </div>
+            <div class="fg"><label class="fl">Email address</label><input class="fi-inp" type="email" placeholder="ahmed@company.com" required></div>
+            <div class="fg">
+              <label class="fl">I am reaching out as a...</label>
+              <select class="fi-sel fi-inp">
+                <option value="">Select one</option>
+                <option>Investor</option>
+                <option>Client — I need an app built</option>
+                <option>Client — I need a web platform</option>
+                <option>Client — I need AI / automation work</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="fg"><label class="fl">Tell us about your project or interest</label><textarea class="fi-ta" placeholder="Give us a brief overview of what you have in mind..."></textarea></div>
+            <button type="submit" class="fsub">Send Message →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-name">KMK <span>Technologies</span></div>
+        <div class="foot-tag">Building for People · Pakistan</div>
+        <div class="socials">
+          <a href="#" class="soc" title="LinkedIn">in</a>
+          <a href="#" class="soc" title="Twitter / X">𝕏</a>
+          <a href="#" class="soc" title="GitHub">⌥</a>
+        </div>
+      </div>
+      <div><div class="fl-title">Company</div><ul class="fl-list"><li><a href="#about">About</a></li><li><a href="#products">Products</a></li><li><a href="#work">Work With Us</a></li></ul></div>
+      <div><div class="fl-title">Products</div><ul class="fl-list"><li><a href="#products">Nishaan</a></li><li><a href="#products">Workfluence</a></li></ul></div>
+      <div><div class="fl-title">Contact</div><ul class="fl-list"><li><a href="mailto:hello@kmktechnologies.dev">hello@kmktechnologies.dev</a></li><li><a href="#">Pakistan</a></li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-copy">© 2024 <span>KMK Technologies</span>. All rights reserved.</div>
+      <div class="foot-domain">kmktechnologies.dev</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── 3D NETWORK CANVAS ── */
+(function(){
+  const cvs = document.getElementById('cvs');
+  const ctx = cvs.getContext('2d');
+  let nodes=[], W, H, raf, mouse={x:0,y:0};
+
+  function resize(){
+    W = cvs.width  = cvs.offsetWidth;
+    H = cvs.height = cvs.offsetHeight;
+  }
+
+  function init(){
+    nodes=[];
+    const n = Math.floor((W*H)/9500);
+    for(let i=0;i<n;i++){
+      const d=Math.random();
+      nodes.push({
+        x:Math.random()*W, y:Math.random()*H,
+        vx:(Math.random()-.5)*(0.12+d*0.22),
+        vy:(Math.random()-.5)*(0.12+d*0.22),
+        d, r:1+d*2.8,
+        ph:Math.random()*Math.PI*2,
+        ps:0.015+Math.random()*0.018
+      });
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const mx=(mouse.x/W-.5)*16, my=(mouse.y/H-.5)*9;
+
+    for(let i=0;i<nodes.length;i++){
+      const a=nodes[i];
+      const ax=a.x+mx*a.d, ay=a.y+my*a.d;
+      for(let j=i+1;j<nodes.length;j++){
+        const b=nodes[j];
+        const bx=b.x+mx*b.d, by=b.y+my*b.d;
+        const dx=ax-bx, dy=ay-by, dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<135){
+          const al=(1-dist/135)*0.17*((a.d+b.d)/2);
+          ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);
+          ctx.strokeStyle=`rgba(91,122,255,${al})`;
+          ctx.lineWidth=0.4+(a.d+b.d)*0.25;ctx.stroke();
+        }
+      }
+      a.ph+=a.ps;
+      const g=(Math.sin(a.ph)+1)/2;
+      const al=0.2+g*0.55*a.d+0.1;
+      if(a.d>0.7&&g>0.72){
+        ctx.beginPath();ctx.arc(ax,ay,a.r+3+g*5,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(91,122,255,${g*.09})`;ctx.lineWidth=0.5;ctx.stroke();
+      }
+      ctx.beginPath();ctx.arc(ax,ay,a.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(91,122,255,${al})`;ctx.fill();
+      a.x+=a.vx;a.y+=a.vy;
+      if(a.x<-20||a.x>W+20)a.vx*=-1;
+      if(a.y<-20||a.y>H+20)a.vy*=-1;
+    }
+    raf=requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  window.addEventListener('resize',()=>{cancelAnimationFrame(raf);resize();init();draw();});
+  resize();init();draw();
+})();
+
+/* ── PARALLAX ── */
+(function(){
+  const hc = document.querySelector('.hero-content');
+  const hg = document.querySelector('.hero-glow');
+  function onScroll(){
+    const s=window.scrollY;
+    if(hc) hc.style.transform=`translateY(${s*.28}px)`;
+    if(hg) hg.style.transform=`translateX(-50%) translateY(${s*.14}px)`;
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+})();
+
+/* ── SCROLL REVEAL ── */
+(function(){
+  const els=document.querySelectorAll('.rev,.rev-l,.rev-r,.stagger');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+  },{threshold:0.07,rootMargin:'0px 0px -36px 0px'});
+  els.forEach(el=>obs.observe(el));
+})();
+
+/* ── 3D TILT ── */
+(function(){
+  document.querySelectorAll('.tilt').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const dx=(e.clientX-r.left-r.width/2)/(r.width/2);
+      const dy=(e.clientY-r.top-r.height/2)/(r.height/2);
+      card.style.transform=`perspective(900px) rotateX(${dy*-3.5}deg) rotateY(${dx*3.5}deg) scale(1.015)`;
+      card.style.boxShadow=`${-dx*10}px ${-dy*10}px 36px rgba(0,0,0,.22),0 0 0 .5px rgba(91,122,255,.18)`;
+      card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+      card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+    });
+    card.addEventListener('mouseleave',()=>{
+      card.style.transform='';card.style.boxShadow='';
+    });
+  });
+})();
+
+/* ── NAV SCROLL STATE ── */
+(function(){
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60),{passive:true});
+})();
+
+/* ── FORM ── */
+function submitForm(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('.fsub');
+  btn.textContent='Message sent ✓';btn.style.background='#1D9E75';
+  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';e.target.reset();},3000);
+}
+</script>
+</body>
+</html>
