@@ -479,7 +479,7 @@ footer{background:var(--bg-surface);border-top:.5px solid var(--border);padding:
     <div class="contact-row">
       <div class="rev-l">
         <p class="sec-body" style="margin-bottom:2rem">Ready to start a conversation? Fill in the form and we will get back to you within 24 hours.</p>
-        <div class="cd"><div class="cd-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4l6 5 6-5M2 4h12v9H2V4z" stroke="#5B7AFF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="cd-label">Email</div><div class="cd-val">hello@kmktechnologies.dev</div></div></div>
+        <div class="cd"><div class="cd-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4l6 5 6-5M2 4h12v9H2V4z" stroke="#5B7AFF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="cd-label">Email</div><div class="cd-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="375f525b5b58775c5a5c4352545f59585b58505e524419535241">[email&#160;protected]</a></div></div></div>
         <div class="cd"><div class="cd-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#5B7AFF" stroke-width="1.2"/><path d="M8 6v4M6 8h4" stroke="#5B7AFF" stroke-width="1.2" stroke-linecap="round"/></svg></div><div><div class="cd-label">Response Time</div><div class="cd-val">Within 24 hours</div></div></div>
         <div class="cd"><div class="cd-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2C5.2 2 3 4.2 3 7c0 3.8 5 9 5 9s5-5.2 5-9c0-2.8-2.2-5-5-5z" stroke="#5B7AFF" stroke-width="1.2"/><circle cx="8" cy="7" r="1.5" stroke="#5B7AFF" stroke-width="1.2"/></svg></div><div><div class="cd-label">Location</div><div class="cd-val">Pakistan</div></div></div>
       </div>
@@ -526,7 +526,7 @@ footer{background:var(--bg-surface);border-top:.5px solid var(--border);padding:
       </div>
       <div><div class="fl-title">Company</div><ul class="fl-list"><li><a href="#about">About</a></li><li><a href="#products">Products</a></li><li><a href="#work">Work With Us</a></li></ul></div>
       <div><div class="fl-title">Products</div><ul class="fl-list"><li><a href="#products">Nishaan</a></li><li><a href="#products">Workfluence</a></li></ul></div>
-      <div><div class="fl-title">Contact</div><ul class="fl-list"><li><a href="mailto:hello@kmktechnologies.dev">hello@kmktechnologies.dev</a></li><li><a href="#">Pakistan</a></li></ul></div>
+      <div><div class="fl-title">Contact</div><ul class="fl-list"><li><a href="/cdn-cgi/l/email-protection#cea6aba2a2a18ea5a3a5baabada6a0a1a2a1a9a7abbde0aaabb8"><span class="__cf_email__" data-cfemail="f29a979e9e9db2999f998697919a9c9d9e9d959b9781dc969784">[email&#160;protected]</span></a></li><li><a href="#">Pakistan</a></li></ul></div>
     </div>
     <div class="foot-bot">
       <div class="foot-copy">© 2024 <span>KMK Technologies</span>. All rights reserved.</div>
@@ -535,7 +535,7 @@ footer{background:var(--bg-surface);border-top:.5px solid var(--border);padding:
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── 3D NETWORK CANVAS ── */
 (function(){
   const cvs = document.getElementById('cvs');
@@ -647,12 +647,68 @@ footer{background:var(--bg-surface);border-top:.5px solid var(--border);padding:
   window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60),{passive:true});
 })();
 
-/* ── FORM ── */
-function submitForm(e){
+/* ── SUPABASE FORM ── */
+const SUPABASE_URL = 'https://vqwpitnlerevyenhgwhp.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_LJGGIKax-MoArConv4uYrA_3SahvwJ_';
+
+async function submitForm(e){
   e.preventDefault();
-  const btn=e.target.querySelector('.fsub');
-  btn.textContent='Message sent ✓';btn.style.background='#1D9E75';
-  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';e.target.reset();},3000);
+  const form = e.target;
+  const btn  = form.querySelector('.fsub');
+  const allInputs = form.querySelectorAll('.fi-inp,.fi-ta,.fi-sel');
+
+  const inputs  = form.querySelectorAll('.fi-inp');
+  const firstName = inputs[0].value.trim();
+  const lastName  = inputs[1].value.trim();
+  const email     = inputs[2].value.trim();
+  const enquiry   = form.querySelector('.fi-sel').value;
+  const message   = form.querySelector('.fi-ta').value.trim();
+
+  btn.textContent='Sending...';
+  btn.style.opacity='0.7';
+  btn.disabled=true;
+
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/contact_submissions`,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization':`Bearer ${SUPABASE_KEY}`,
+        'Prefer':'return=minimal'
+      },
+      body: JSON.stringify({
+        first_name: firstName,
+        last_name:  lastName,
+        email:      email,
+        enquiry_type: enquiry,
+        message:    message
+      })
+    });
+
+    if(res.ok || res.status===201){
+      btn.textContent='Message sent ✓';
+      btn.style.opacity='1';
+      btn.style.background='#1D9E75';
+      form.reset();
+      setTimeout(()=>{
+        btn.textContent='Send Message →';
+        btn.style.background='';
+        btn.disabled=false;
+      },4000);
+    } else {
+      throw new Error('Failed');
+    }
+  } catch(err){
+    btn.textContent='Something went wrong — try again';
+    btn.style.background='#C0392B';
+    btn.style.opacity='1';
+    btn.disabled=false;
+    setTimeout(()=>{
+      btn.textContent='Send Message →';
+      btn.style.background='';
+    },4000);
+  }
 }
 </script>
 </body>
